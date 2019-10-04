@@ -5,14 +5,16 @@ var spotify = new Spotify(keys.spotify);
 var moment = require("moment");
 var axios = require("axios");
 var userCommand = process.argv[2]
-var userInput = process.argv[3]
+var userInput = "";
+var args = process.argv;
 
-for (var i = 4; i < process.argv.length; i++) {
-    if (i > 4 && i < process.argv.length) {
-        userInput += "+" + process.argv[i];
-    }
-    else {
-        userInput += process.argv[i];
+for (var i = 4; i < args.length; i++) {
+
+    if (i > 4 && i < args.length) {
+      userInput = userInput + "+" + args[i];
+    } else {
+      userInput += args[i];
+  
     }
 }
 
@@ -66,8 +68,15 @@ axios.get(bandsintown)
     console.log(error);
 })
 }
+
 function movieThis(){
-    axios.get("http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy")
+    console.log()
+    if (!userInput){
+        userInput = Mr . Nobody
+    }
+    var queryURL = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy"
+    console.log(queryURL)
+    axios.get(queryURL)
     .then(function(response){
         console.log("Title: " + response.data.Title);
         console.log("Year Released: " + response.data.Year);
@@ -81,4 +90,3 @@ function movieThis(){
 };
 
 
-console.log("Hello");
