@@ -1,4 +1,5 @@
 require("dotenv").config();
+var fs = require("fs")
 var keys = require("./keys.js");
 var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
@@ -8,6 +9,7 @@ var userCommand = process.argv[2]
 var userInput = "";
 var args = process.argv;
 
+// after process.argv[4] it puts a "+" after every argument for the url so the search works with spaces
 for (var i = 4; i < args.length; i++) {
 
     if (i > 4 && i < args.length) {
@@ -55,6 +57,13 @@ spotify.search({type: "track", query: userInput})
 };
 
 function concertThis() {
+    if (!userInput){
+        userInput = "flying+lotus"
+        console.log("------------")
+        console.log("The function couldn't find your band, so go see flying lotus")
+        console.log("------------")
+    }
+
 var bandsintown = "https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=codingbootcamp"
 axios.get(bandsintown)
 .then(function(response){
@@ -72,7 +81,7 @@ axios.get(bandsintown)
 function movieThis(){
     console.log()
     if (!userInput){
-        userInput = Mr . Nobody
+        userInput = "Mr Nobody"
     }
     var queryURL = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy"
     console.log(queryURL)
@@ -89,4 +98,16 @@ function movieThis(){
     });
 };
 
+function doThis() {
+    fs.readFile("random.txt", "utf8", function(err, data) {
+        if (err) {
+            console.log(err)
+        }
 
+        var readArray = data.split(",");
+        userInput = readArray[1];
+
+        spotifyThis(userInput)
+        
+    })
+};
